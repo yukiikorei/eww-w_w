@@ -1,0 +1,216 @@
+*{
+    all : unset;
+}
+
+button {
+    border-radius : 10;
+    /**box-shadow: 0 8px 16px 0 rgba(0,0,0,0.2), 0 6px 20px 0 rgba(0,0,0,0.15);**/
+}
+
+button:hover{
+    /**background : #39d5bb;**/
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.3),
+                0 17px 50px 0 rgba(0,0,0,0.3);
+}
+
+
+
+.wifi-box {
+    /**background-color : #39c5bb;**/
+}
+
+.wifi-ap {
+    /** background : #39c5bb; **/
+    /** padding: 15px 32px; **/
+    /** border: 3 solid #39c5bb; **/
+    /** border-radius : 5px;  **/
+    border-radius : 0;
+    border-top-left-radius : 10px;
+    border-bottom-left-radius : 10px;
+}
+
+.wifi-show {
+    background : #29b5aa;
+    border-radius : 0;
+    border-top-right-radius : 10px;
+    border-bottom-right-radius : 10px;
+}
+
+.wifi-list-box {
+    background : rgba(100,100,120,0.9);
+	border-radius: 10px;
+}
+
+.wifiselect {
+    /** background : #39c5bb; **/
+    margin : 4px;
+    font-size : 13;
+    border-radius : 0px;
+}
+.wifiselect:hover{
+    background : #39c5dd;
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.20), 0 17px 50px 0 rgba(0,0,0,0.1);
+}
+
+.genwin {
+    background : #666677;
+    border-radius : 10px;
+    font-size : 12;
+}
+
+/** ====================system=======================**/
+
+.boot {
+    /** background : #D9187D; **/
+    background : #6D7482;
+    border-radius : 0px;
+    border-top-left-radius : 10px;
+    border-bottom-left-radius : 10px;
+}
+
+.battery {
+    /** background : #6A7C9E; **/
+    background : #48b0b3;
+    border-radius : 0px;
+}
+
+.close {
+    /** background : #23304C; **/
+    background : #6D7482;
+    border-radius : 0px;
+    border-top-right-radius : 10px;
+    border-bottom-right-radius : 10px;
+}
+
+
+/** ====================music=========================**/
+
+
+.album_art {
+	/** background-size: 300px; **/
+	min-height: 74px;
+	min-width: 74px;
+	margin: 8px;
+	border-radius: 6px;
+    /**background-image: url('/home/korei/Projects/eww-dev/cover.jpg'); **/
+    background-size: cover;
+}
+
+.song {
+	color: #dddddd;
+	font-size : 13;
+	font-weight : bold;
+	margin : 5px 0px 0px 0px;
+}
+
+.artist {
+	color: #dddddd;
+	font-size : 10;
+	font-weight : normal;
+	margin : 0px 0px 0px 0px;
+}
+
+.btn_prev, .btn_play, .btn_next {
+	font-family: Iosevka Nerd Font;
+}
+.btn_prev {
+	color: #dddddd;
+	font-size : 12;
+	font-weight : normal;
+}
+.btn_play {
+	color: #dddddd;
+	font-size : 14;
+	font-weight : bold;
+}
+.btn_next {
+	color: #dddddd;
+	font-size : 12;
+	font-weight : normal;
+}
+
+.music_bar scale trough highlight {
+	/** all: unset; **/
+	background-color: #39c5bb;
+	border-radius: 2px;
+}
+
+.music_bar scale trough {
+	/** all: unset; **/
+	background-color: #dddddd;
+	border-radius: 2px;
+	min-height: 4px;
+	min-width: 200px;
+	margin : 0px 0px 0px 0px;
+}
+
+.play-control {
+	margin: 3px 10px 5px 0px;
+}
+
+
+/** ==============bt================= **/
+
+.bt-name {
+    /** background : #39c5bb; **/
+    /** padding: 15px 32px; **/
+    /** border: 3 solid #39c5bb; **/
+    /** border-radius : 5px;  **/
+    border-radius : 10px;
+    border-top-left-radius : 10px;
+    border-bottom-left-radius : 10px;
+}
+
+
+/**===============volume==============**/
+
+.mute {
+	background: #D9187D;
+    border-radius: 0px;
+    border-top-left-radius : 10px;
+    border-bottom-left-radius : 10px;
+    min-width: 35px;
+}
+
+.volume-bar scale trough highlight {
+	/** all: unset; **/
+	background-color: #D9187D;
+    border-top-right-radius : 10px;
+    border-bottom-right-radius : 10px;
+}
+
+.volume-bar scale trough {
+	/** all: unset; **/
+	background-color: #666677;
+    border-top-right-radius : 10px;
+    border-bottom-right-radius : 10px;
+	min-height: 30px;
+    min-width: 265px;
+}
+
+/**===============brightness==============**/
+
+.brightness-sign {
+	background: #FFFDFD;
+    color: #000000;
+    border-radius: 0px;
+    border-top-left-radius : 10px;
+    border-bottom-left-radius : 10px;
+    min-width: 35px;
+}
+
+.brightness-bar scale trough highlight {
+	/** all: unset; **/
+	background-color: #FFFDFD;
+    border-top-right-radius : 10px;
+    border-bottom-right-radius : 10px;
+}
+
+.brightness-bar scale trough {
+	/** all: unset; **/
+	background-color: #666677;
+    border-top-right-radius : 10px;
+    border-bottom-right-radius : 10px;
+	min-height: 30px;
+	min-width: 265px;
+}

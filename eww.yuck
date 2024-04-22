@@ -1,0 +1,254 @@
+(defvar configDir "~/Projects/eww-dev")
+
+;==============================wifi====================================
+
+(defpoll cur_wifi_ssid :interval "3s" "~/Projects/eww-dev/script/wifi.sh 'get_current_wifi_ssid'")
+(defpoll wifi_status_color :interval "3s" "~/Projects/eww-dev/script/wifi.sh 'get_status_color'")
+
+(defwidget wifi_state []
+   (box :orientation "horizontal"
+        :class "wifi-box"
+        (button :class "wifi-ap"
+                :onclick "~/Projects/eww-dev/script/wifi.sh toggle_wifi"
+                :style "background-color:${wifi_status_color};"
+            "󰤨  ${cur_wifi_ssid}")
+    )
+)
+
+(defwidget wifi_show_list []
+   (box :orientation "horizontal"
+        :class "wifi-box"
+        (button :class "wifi-show"
+                :onclick "~/Projects/eww-dev/wincontrol.sh toggle_window wifilist"
+                 " > "          )
+    )
+)
+
+(defpoll wifi_select_button :interval "5s" "~/Projects/eww-dev/script/wifi.sh 'get_wifi_info'" )
+
+(defwidget wifilist_widget []
+    (literal :content wifi_select_button) ;button class "wifiselect"
+)
+
+;============================bt===========================
+
+(defpoll cur_bt_state :interval "3s" "~/Projects/eww-dev/script/bluetooth.sh 'get_bt_status'")
+(defpoll bt_status_color :interval "3s" "~/Projects/eww-dev/script/bluetooth.sh 'get_bt_status_color'")
+
+(defwidget bt_state []
+   (box :orientation "horizontal"
+        (button :class "bt-name"
+                :onclick "~/Projects/eww-dev/script/bluetooth.sh 'toggle_bt'"
+                :style "background: ${bt_status_color};"
+            "󰂯 ${cur_bt_state}")
+    )
+)
+
+
+; ========================== music ====================
+
+(defpoll music_cover :interval "3s" "~/Projects/eww-dev/script/music.sh get_album_cover")
+(defpoll music_name :interval "3s" "~/Projects/eww-dev/script/music.sh get_play_title")
+(defpoll music_artist :interval "3s" "~/Projects/eww-dev/script/music.sh get_play_artist")
+(defpoll music_status_icon :interval "3s" "~/Projects/eww-dev/script/music.sh get_play_status_icon")
+
+
+(defwidget music [] 
+	(box :class "genwin" :orientation "h" 
+         ;:space-evenly "false"
+         :vexpand "false" :hexpand "middle"
+        (box :halign "center" :space-evenly "false"
+		(box :class "album_art" :vexpand "false" :hexpand "false" 
+              :style "background-image: url('${music_cover}');"
+        )
+		(box :orientation "v" :spacing 6 :space-evenly "false" 
+            :vexpand "false" :hexpand "false" :class "play-control"
+			(label :halign "center" :class "song" :wrap "true" 
+                   :limit-width 15 :text '${music_name}' )
+			(label :halign "center" :class "artist" :wrap "true" 
+                   :limit-width 15 :text '${music_artist}' )
+			(box :orientation "h" :spacing 28 :halign "center" 
+                 :space-evenly "true" :vexpand "false" :hexpand "false" 
+				(button :class "btn_prev" 
+                        :onclick "scripts/music_info --prev" "<<")
+				(button :class "btn_play" 
+                        :onclick "scripts/music_info --toggle" 
+                        "${music_status_icon}"
+                )
+				(button :class "btn_next" 
+                        :onclick "scripts/music_info --next" ">>"))
+			(box :class "music_bar" :halign "center" 
+                 :vexpand "false" :hexpand "false" 
+				(scale :onscroll "mpc -q seek +1" 
+                       :min 0 :active "true" :max 100 
+                    ;:value CURRENT
+                )
+            )
+        )
+        )
+    )
+)
+
+;===========================volume==============================
+
+(defwidget volume []
+    (box 
+        :class "volume-bar" 
+        :vexpand "false" :hexpand "false"
+        :space-evenly false
+        (button :class "mute"
+            " "
+        )
+        (scale :onscroll "" 
+            :min 0 :active "true" :max 100 
+            ;value
+        )
+    )
+)
+
+;============================brightness=========================
+
+(defwidget brightness []
+    (box 
+        :class "brightness-bar" 
+        :vexpand "false" :hexpand "false" 
+        :space-evenly false
+        (label :class "brightness-sign"
+            :text " "
+        )
+        (scale :onscroll "" 
+            :min 5 :active "true" :max 100 
+            ;value
+        )
+    )
+)
+
+(defwidget system []
+    (box :orientation "h"
+         ;:halign "center"
+        (button :class "boot" 
+            "⏻ ")
+        (button :class "battery" 
+            " ")
+        (button :class "close" 
+            "")
+    )
+)
+
+;===========================windows====================================
+
+(defwindow system_win
+    :monitor 0
+    :geometry (geometry :x "12px"
+                        :y "10px"
+                        :width "300px"
+                        :height "25px"
+                        :anchor "top left")
+    :stacking "fg"
+    :wm-ignore false
+    (system)
+    ;(music)
+)
+
+
+(defwindow music_win
+    :monitor 0
+    :geometry (geometry :x "12px"
+                        :y "40px"
+                        :width "300px"
+                        :height "90px"
+                        :anchor "top left")
+    :stacking "fg"
+    :wm-ignore false
+    (music)
+)
+
+(defwindow wifilist
+           :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
+           :geometry (geometry :x "320px"
+                               :y "40px"
+                               :width "300px"
+                               :height "1000px"
+                               :anchor "top left"
+                               :vexpand "false")
+           :stacking "fg"
+           ;:reserve (struts :distance "40px" :side "top")
+           :windowtype "normal"
+           :wm-ignore false
+    (wifilist_widget)
+)
+
+(defwindow wifi_state_win
+           :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
+           :geometry (geometry :x "12px"
+                               :y "135px"
+                               :width "260px"
+                               :height "30px"
+                               :anchor "top left"
+    )
+           :stacking "fg"
+           ;:reserve (struts :distance "40px" :side "top")
+           :windowtype "normal"
+           :wm-ignore false
+    (wifi_state)
+)
+
+(defwindow wifi_show_list_win
+           :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
+           :geometry (geometry :x "270px"
+                               :y "135px"
+                               :width "40px"
+                               :height "30px"
+                               :anchor "top left")
+           :stacking "fg"
+           ;:reserve (struts :distance "40px" :side "top")
+           :windowtype "normal"
+           :wm-ignore false
+    (wifi_show_list)
+)
+
+
+(defwindow bt_state_win
+           :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
+           :geometry (geometry :x "12px"
+                               :y "170px"
+                               :width "300px"
+                               :height "30px"
+                               :anchor "top left"
+    )
+           :stacking "fg"
+           ;:reserve (struts :distance "40px" :side "top")
+           :windowtype "normal"
+           :wm-ignore false
+    (bt_state)
+)
+
+(defwindow volume_win
+           :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
+           :geometry (geometry :x "12px"
+                               :y "205px"
+                               :width "300px"
+                               :height "30px"
+                               :anchor "top left"
+    )
+           :stacking "fg"
+           ;:reserve (struts :distance "40px" :side "top")
+           :windowtype "normal"
+           :wm-ignore false
+    (volume)
+)
+
+(defwindow brightness_win
+           :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
+           :geometry (geometry :x "12px"
+                               :y "240px"
+                               :width "300px"
+                               :height "30px"
+                               :anchor "top left"
+    )
+           :stacking "fg"
+           ;:reserve (struts :distance "40px" :side "top")
+           :windowtype "normal"
+           :wm-ignore false
+    (brightness)
+)
