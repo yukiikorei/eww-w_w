@@ -68,7 +68,7 @@ get_album_cover(){
         fi
         cover_path=/tmp/ewwmusiccover/${filename}
     else
-        cover_path=""
+        cover_path="" # 返回空时，图片不会刷新
     fi
     echo $cover_path
 }
