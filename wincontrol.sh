@@ -27,7 +27,7 @@ toggle_main(){
     if eww -c $config_dir windows | grep -q "\*"; then
         close_all_windows
     else
-        eww -c $config_dir open-many "wifi_state_win" "wifi_show_list_win" "music_win" "bt_state_win" "volume_win" "brightness_win"  "system_win" 
+        eww -c $config_dir open-many "wifi_win" "music_win" "bt_state_win" "volume_win" "brightness_win"  "system_win" 
     fi
 }
 

@@ -38,7 +38,7 @@ get_play_status_icon(){
     fi
 }
 
-fet_paly_application(){
+get_paly_application(){
     playerctl metadata mpris:trackid | tr -d "'" | awk -F'/' '{ print $(NF) }'
 }
 

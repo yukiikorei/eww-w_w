@@ -42,13 +42,30 @@ get_current_wifi_ssid() {
         echo "wifi off"
         return
     fi
-    cws=`nmcli -t -f TYPE,NAME connection show --active | grep 802-11-wireless | awk -F: '{print $2}'`
+    cws=$(nmcli -t -f TYPE,NAME connection show --active | grep 802-11-wireless | awk -F: '{print $2}')
     if [ -n "$cws" ]; then
         echo $cws
     else
         echo "searching ..."
     fi
 }
+
+get_wifi_state(){
+    local ssid=""
+    local color=""
+    if nmcli radio wifi | grep -q "enabled"; then
+        color='#39c5bb'
+        ssid=$(nmcli -t -f TYPE,NAME connection show --active | grep 802-11-wireless | awk -F: '{print $2}')
+        if [ -z "$ssid" ]; then
+            ssid="searching ..."
+        fi
+    else
+        color='#666677'
+        ssid="wifi off"
+    fi
+    echo "{ \"ssid\": \"$ssid\", \"color\" :\"$color\"}"
+}
+
 
 connect_wifi(){
     ssid="$1"

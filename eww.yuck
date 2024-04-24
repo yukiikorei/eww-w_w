@@ -1,30 +1,25 @@
-(defvar configDir "~/Projects/eww-dev")
-
 ;==============================wifi====================================
 
-(defpoll cur_wifi_ssid :interval "3s" "~/Projects/eww-dev/script/wifi.sh 'get_current_wifi_ssid'")
-(defpoll wifi_status_color :interval "3s" "~/Projects/eww-dev/script/wifi.sh 'get_status_color'")
+(defpoll wifi_info :interval "3s" "script/wifi.sh 'get_wifi_state'")
 
-(defwidget wifi_state []
-   (box :orientation "horizontal"
-        :class "wifi-box"
+(defwidget wifi []
+    (box :orientation "horizontal"
+         :class "wifi-box"
+         :space-evenly false
         (button :class "wifi-ap"
-                :onclick "~/Projects/eww-dev/script/wifi.sh toggle_wifi"
-                :style "background-color:${wifi_status_color};"
-            "󰤨  ${cur_wifi_ssid}")
-    )
-)
-
-(defwidget wifi_show_list []
-   (box :orientation "horizontal"
-        :class "wifi-box"
+            :onclick "script/wifi.sh toggle_wifi"
+            :style "background-color:${wifi_info.color}; "
+            "󰤨  ${wifi_info.ssid}" 
+        )
         (button :class "wifi-show"
-                :onclick "~/Projects/eww-dev/wincontrol.sh toggle_window wifilist"
-                 " > "          )
+            :onclick "./wincontrol.sh toggle_window wifilist"
+            " > "          
+        )
+
     )
 )
 
-(defpoll wifi_select_button :interval "5s" "~/Projects/eww-dev/script/wifi.sh 'get_wifi_info'" )
+(defpoll wifi_select_button :interval "5s" "script/wifi.sh 'get_wifi_info'" )
 
 (defwidget wifilist_widget []
     (literal :content wifi_select_button) ;button class "wifiselect"
@@ -32,25 +27,23 @@
 
 ;============================bt===========================
 
-(defpoll cur_bt_state :interval "3s" "~/Projects/eww-dev/script/bluetooth.sh 'get_bt_status'")
-(defpoll bt_status_color :interval "3s" "~/Projects/eww-dev/script/bluetooth.sh 'get_bt_status_color'")
+(defpoll bt_state :interval "3s" "script/bluetooth.sh 'get_bt_state'")
 
 (defwidget bt_state []
    (box :orientation "horizontal"
         (button :class "bt-name"
-                :onclick "~/Projects/eww-dev/script/bluetooth.sh 'toggle_bt'"
-                :style "background: ${bt_status_color};"
-            "󰂯 ${cur_bt_state}")
+                :onclick "script/bluetooth.sh 'toggle_bt'"
+                :style "background: ${bt_state.color};"
+            "󰂯 ${bt_state.state}")
     )
 )
 
-
 ; ========================== music ====================
 
-(defpoll music_cover :interval "3s" "~/Projects/eww-dev/script/music.sh get_album_cover")
-(defpoll music_name :interval "3s" "~/Projects/eww-dev/script/music.sh get_play_title")
-(defpoll music_artist :interval "3s" "~/Projects/eww-dev/script/music.sh get_play_artist")
-(defpoll music_status_icon :interval "3s" "~/Projects/eww-dev/script/music.sh get_play_status_icon")
+(defpoll music_cover :interval "3s" "script/music.sh get_album_cover")
+(defpoll music_name :interval "3s" "script/music.sh get_play_title")
+(defpoll music_artist :interval "3s" "script/music.sh get_play_artist")
+(defpoll music_status_icon :interval "3s" "script/music.sh get_play_status_icon")
 
 
 (defwidget music [] 
@@ -70,13 +63,13 @@
 			(box :orientation "h" :spacing 28 :halign "center" 
                  :space-evenly "true" :vexpand "false" :hexpand "false" 
 				(button :class "btn_prev" 
-                        :onclick "scripts/music_info --prev" "<<")
+                        :onclick "script/music.sh play_pre_song" "<<")
 				(button :class "btn_play" 
-                        :onclick "scripts/music_info --toggle" 
+                        :onclick "script/music.sh toggle_play_music" 
                         "${music_status_icon}"
                 )
 				(button :class "btn_next" 
-                        :onclick "scripts/music_info --next" ">>"))
+                        :onclick "script/music.sh play_next_song" ">>"))
 			(box :class "music_bar" :halign "center" 
                  :vexpand "false" :hexpand "false" 
 				(scale :onscroll "" 
@@ -91,7 +84,7 @@
 
 ;===========================volume==============================
 
-(defpoll cur_volume :interval "5s" "~/Projects/eww-dev/script/volume.sh get_volume")
+(defpoll cur_volume :interval "5s" "script/volume.sh get_volume")
 
 (defwidget volume []
     (box 
@@ -103,7 +96,7 @@
         )
         (scale 
             :label "a"
-            :onchange `~/Projects/eww-dev/script/volume.sh set_volume {}`
+            :onchange `script/volume.sh set_volume {}`
             :min 0 
             :active "true"
             :max 101
@@ -115,7 +108,7 @@
 ;============================brightness=========================
 
 
-(defpoll cur_brightness :interval "5s" "~/Projects/eww-dev/script/brightness.sh get_brightness")
+(defpoll cur_brightness :interval "5s" "script/brightness.sh get_brightness")
 
 (defwidget brightness []
     (box 
@@ -126,7 +119,7 @@
             :text " "
         )
         (scale 
-            :onchange `~/Projects/eww-dev/script/brightness.sh set_brightness {}`
+            :onchange `script/brightness.sh set_brightness {}`
             :min 10 :active "true" :max 256
             :value "${cur_brightness}"
         )
@@ -141,7 +134,7 @@
         (button :class "battery" 
             " ")
         (button :class "close" 
-                :onclick "~/Projects/eww-dev/wincontrol.sh close_all_windows"
+                :onclick "./wincontrol.sh close_all_windows"
             "")
     )
 )
@@ -158,7 +151,6 @@
     :stacking "fg"
     :wm-ignore false
     (system)
-    ;(music)
 )
 
 
@@ -189,11 +181,11 @@
     (wifilist_widget)
 )
 
-(defwindow wifi_state_win
+(defwindow wifi_win
            :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
            :geometry (geometry :x "12px"
                                :y "135px"
-                               :width "260px"
+                               :width "300px"
                                :height "30px"
                                :anchor "top left"
     )
@@ -201,23 +193,8 @@
            ;:reserve (struts :distance "40px" :side "top")
            :windowtype "normal"
            :wm-ignore false
-    (wifi_state)
+    (wifi)
 )
-
-(defwindow wifi_show_list_win
-           :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'
-           :geometry (geometry :x "270px"
-                               :y "135px"
-                               :width "40px"
-                               :height "30px"
-                               :anchor "top left")
-           :stacking "fg"
-           ;:reserve (struts :distance "40px" :side "top")
-           :windowtype "normal"
-           :wm-ignore false
-    (wifi_show_list)
-)
-
 
 (defwindow bt_state_win
            :monitor 0 ;such as '["<primary>" "HDMI-A-1" "PHL 345B1C" 0]'

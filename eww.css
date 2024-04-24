@@ -24,12 +24,14 @@ button:hover{
     /** padding: 15px 32px; **/
     /** border: 3 solid #39c5bb; **/
     /** border-radius : 5px;  **/
+    min-width: 260px;
     border-radius : 0;
     border-top-left-radius : 10px;
     border-bottom-left-radius : 10px;
 }
 
 .wifi-show {
+    min-width: 40px;
     background : #29b5aa;
     border-radius : 0;
     border-top-right-radius : 10px;
